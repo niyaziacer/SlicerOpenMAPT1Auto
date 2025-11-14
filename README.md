@@ -112,9 +112,12 @@ pip install gdown
 ## Parcellation Example
 
 ABelow is an example of the parcellated brain:
+Load T1_280_segment.nii.gz in 3D Slicer and apply a color table (e.g., FullRainbow) if desired.
+
+## Parcellation Example
 
 ![Parcellation Example](parcellation_example.png)
-Load T1_280_segment.nii.gz in 3D Slicer and apply a color table (e.g., FullRainbow) if desired.
+
 
 References
 
@@ -130,6 +133,7 @@ This project is licensed under the MIT License. See LICENSE for details.
 
 Important: Pretrained models are subject to the JHU Research Software License Agreement – No For-Profit, No Redistribution.
 This software and models are intended for educational and research purposes only, not for any commercial or profit-driven use.
+
 
 
 
