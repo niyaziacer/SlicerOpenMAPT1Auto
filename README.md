@@ -95,7 +95,7 @@ for fname, file_id in files.items():
         print(f"{fname} already exists, skipping.")
 Install gdown:
 
-bash
+```bash
 Kodu kopyala
 pip install gdown
 Parcellation Example
@@ -117,6 +117,7 @@ This project is released under the MIT License.
 
 Pretrained models follow the JHU Research Software License – No For-Profit, No Redistribution.
 This software is intended for academic research only.
+
 
 
 
