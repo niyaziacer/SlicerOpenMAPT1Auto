@@ -17,6 +17,7 @@
 
 ---
 ![Region Visualization](images/img1.png)
+![Region Visualization](images/img2.png)
 ## Installation
 
 1. Clone this repository:
