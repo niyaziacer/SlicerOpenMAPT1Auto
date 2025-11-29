@@ -116,10 +116,10 @@ doi: 10.1002/hbm.70063
 PMID: 39523990 • PMCID: PMC11551626
 
 License
-This project is released under the MIT License.
 
 Pretrained models follow the JHU Research Software License – No For-Profit, No Redistribution.
 This software is intended for academic research only.
+
 
 
 
