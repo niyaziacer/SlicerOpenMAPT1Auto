@@ -1,0 +1,73 @@
+# License Information
+
+This repository contains two distinct components with different licenses:
+
+---
+
+## 1. 3D Slicer Extension Code (MIT License)
+
+The 3D Slicer integration code, user interface, and wrapper scripts in this repository are licensed under the MIT License:
+
+**Copyright (c) 2025 Niyazi Acer (Erciyes University)**
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## 2. OpenMAP-T1 Model and Core Algorithm (JHU License)
+
+The OpenMAP-T1 deep learning model weights and core segmentation algorithm are:
+
+**Copyright (c) 2024 Taiki Nishimaki and Johns Hopkins University**
+
+**Original Repository:** https://github.com/TaikiNishimaki/OpenMAP-T1
+
+**License:** JHU Research Software License Agreement
+
+This 3D Slicer extension uses the pre-trained OpenMAP-T1 model, which is 
+distributed under the Johns Hopkins University Research Software License.
+
+**IMPORTANT:** Model weights (*.pth files) are NOT included in this repository 
+and must be downloaded separately. By downloading and using the model weights, 
+you agree to comply with the JHU Research Software License terms.
+
+For the complete OpenMAP-T1 license terms, please visit:
+https://github.com/TaikiNishimaki/OpenMAP-T1/blob/main/LICENSE
+
+**Citation:** If you use this extension in your research, please cite the 
+original OpenMAP-T1 paper:
+
+```
+Nishimaki, T., et al. (2024). OpenMAP-T1: A Rapid Deep Learning Approach to 
+Parcellation of 280 Anatomical Regions to Cover the Whole Brain. 
+[Journal/Conference details]
+```
+
+---
+
+## Summary
+
+- **Use this Slicer extension freely** under MIT License
+- **Respect the JHU License** for the underlying OpenMAP-T1 model
+- **Cite the original work** when publishing research using this tool
+- **Model weights are distributed separately** and subject to JHU terms
+
+For questions about:
+- **Extension usage:** Contact Niyazi Acer (niyaziacer@erciyes.edu.tr)
+- **Model licensing:** Contact OpenMAP-T1 authors (see original repository)

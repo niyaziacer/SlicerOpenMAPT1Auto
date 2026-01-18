@@ -1,0 +1,25 @@
+# Model files (separate license, too large for GitHub)
+MODEL_FOLDER/*.pth
+*.pth
+
+# Output files
+output/*.nii.gz
+output/*.nii
+output/T1_tmp.*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# System
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Temporary
+*.tmp
+temp/
