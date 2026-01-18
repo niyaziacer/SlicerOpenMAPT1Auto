@@ -128,7 +128,32 @@ class OpenMAPT1AutoParcellationWidget(slicer.ScriptedLoadableModule.ScriptedLoad
         self.logMessage("Postprocessing...")
         aligned_output = postprocessing(parcellated, separated, shift, device)
 
-        # === 280 bölge hacimlerini hesapla ve CSV'ye kaydet ===
+        # === Load label names from Untitled.txt ===
+        label_dict = {}
+        txt_path = os.path.join(output_folder, "Untitled.txt")
+        if os.path.exists(txt_path):
+            try:
+                self.logMessage(f"Loading labels from {txt_path}...")
+                with open(txt_path, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line or line.startswith('#'):
+                            continue
+                        parts = line.split()
+                        try:
+                            idx = int(parts[0])
+                            name = ' '.join(parts[7:]).strip('"').strip("'")
+                            if name:
+                                label_dict[idx] = name
+                        except:
+                            pass
+                self.logMessage(f"Loaded {len(label_dict)} labels")
+            except Exception as e:
+                self.logMessage(f"Warning: Could not load labels: {e}")
+        else:
+            self.logMessage(f"Warning: Label file not found: {txt_path}")
+
+        # === Calculate volumes ===
         self.logMessage("Calculating region volumes...")
         voxel_volume = np.prod(data.header.get_zooms())
         unique_labels, counts = np.unique(aligned_output, return_counts=True)
@@ -141,30 +166,118 @@ class OpenMAPT1AutoParcellationWidget(slicer.ScriptedLoadableModule.ScriptedLoad
             "LabelID": unique_labels.astype(int),
             "Volume_mm3": volumes_mm3
         })
+        
+        if label_dict:
+            df['LabelName'] = df['LabelID'].map(label_dict).fillna("")
+        else:
+            df['LabelName'] = ""
 
-        # Etiket isimlerini ekle
-        label_csv_file = r"C:\Users\LENOVO\Documents\SlicerModules\OpenMAPT1Auto\OpenMAP-T1_multilevel_lookup_table_dictionary.csv"
-        if os.path.exists(label_csv_file):
-            try:
-                labels_df = pd.read_csv(label_csv_file)
-                label_dict = dict(zip(labels_df['ROI#'], labels_df['Label']))
-                df['LabelName'] = [label_dict.get(l, "") for l in df['LabelID']]
-            except Exception as e:
-                self.logMessage(f"Warning: Could not add label names: {e}")
-
+        # Save CSV
         csv_path = os.path.join(output_folder, "T1_280_volumes.csv")
         df.to_csv(csv_path, index=False)
-        self.logMessage(f"Volume table saved to: {csv_path}")
+        self.logMessage(f"Volume table saved: {csv_path}")
+        
+        # === EXCEL EXPORT ===
+        try:
+            excel_path = os.path.join(output_folder, "T1_280_volumes.xlsx")
+            df.to_excel(excel_path, index=False, sheet_name="Brain_Volumes")
+            self.logMessage(f"Excel file saved: {excel_path}")
+        except Exception as e:
+            self.logMessage(f"Warning: Excel export failed: {e}")
+            self.logMessage("  Install: pip install openpyxl")
 
-        # Save final labelmap aligned to T1
+        # Save labelmap
         nii = nib.Nifti1Image(aligned_output.astype(np.uint16), affine=data.affine)
         out_label = os.path.join(output_folder, "T1_280_segment.nii.gz")
         nib.save(nii, out_label)
         self.logMessage(f"Final labelmap saved: {out_label}")
 
-        # Load into Slicer
-        seg_node = slicer.util.loadLabelVolume(out_label)
-        seg_node.SetAndObserveTransformNodeID(None)
-        seg_node.GetDisplayNode().SetOpacity(0.4)
-        slicer.util.setSliceViewerLayers(background=volumeNode, foreground=seg_node, foregroundOpacity=0.4)
-        self.logMessage("✅ Pipeline finished successfully. Labelmap aligned to T1 in all planes.")
+        # Load labelmap into Slicer (2D)
+        labelNode = slicer.util.loadLabelVolume(out_label)
+        labelNode.SetName("OpenMAP_T1_Labelmap")
+        labelNode.SetAndObserveTransformNodeID(None)
+        labelNode.GetDisplayNode().SetOpacity(0.4)
+        slicer.util.setSliceViewerLayers(background=volumeNode, foreground=labelNode, foregroundOpacity=0.4)
+        self.logMessage("2D labelmap loaded")
+
+        # === CREATE 3D SEGMENTATION ===
+        try:
+            self.logMessage("Creating 3D segmentation (may take 1-2 minutes)...")
+            
+            # Create segmentation node
+            segNode = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLSegmentationNode")
+            segNode.SetName("OpenMAP_T1_Segmentation")
+            
+            # Import labelmap to segmentation
+            segLogic = slicer.modules.segmentations.logic()
+            segLogic.ImportLabelmapToSegmentationNode(labelNode, segNode)
+            segNode.SetReferenceImageGeometryParameterFromVolumeNode(volumeNode)
+            
+            # Create 3D surfaces
+            segNode.CreateClosedSurfaceRepresentation()
+            
+            # === RENAME SEGMENTS WITH LABELS ===
+            if label_dict:
+                segmentation = segNode.GetSegmentation()
+                segmentIds = vtk.vtkStringArray()
+                segmentation.GetSegmentIDs(segmentIds)
+                
+                renamed = 0
+                for i in range(segmentIds.GetNumberOfValues()):
+                    segId = segmentIds.GetValue(i)
+                    segment = segmentation.GetSegment(segId)
+                    if segment:
+                        # Get current name
+                        segName = segment.GetName()
+                        
+                        # Extract label ID from name (e.g., "Segment_1_75" -> 75)
+                        try:
+                            # Try parsing last number
+                            parts = segName.split('_')
+                            label_id = int(parts[-1])
+                            
+                            # Apply new name if exists
+                            if label_id in label_dict:
+                                segment.SetName(label_dict[label_id])
+                                renamed += 1
+                        except:
+                            pass
+                
+                self.logMessage(f"Renamed {renamed} segments")
+            
+            # Set display properties
+            displayNode = segNode.GetDisplayNode()
+            if displayNode:
+                displayNode.SetVisibility3D(True)
+                displayNode.SetOpacity3D(0.6)
+                displayNode.SetVisibility2DFill(True)
+                displayNode.SetVisibility2DOutline(True)
+            
+            # Center 3D view
+            layoutManager = slicer.app.layoutManager()
+            if layoutManager:
+                threeDWidget = layoutManager.threeDWidget(0)
+                if threeDWidget:
+                    threeDView = threeDWidget.threeDView()
+                    threeDView.resetFocalPoint()
+                    threeDView.resetCamera()
+            
+            self.logMessage("✓ 3D segmentation created and visible in Segment Editor")
+            
+        except Exception as e:
+            self.logMessage(f"Warning: 3D segmentation failed: {e}")
+            import traceback
+            self.logMessage(traceback.format_exc())
+
+        self.logMessage("="*50)
+        self.logMessage("✅ PIPELINE COMPLETED")
+        self.logMessage("="*50)
+        self.logMessage(f"Total regions: {len(unique_labels)}")
+        self.logMessage(f"Output folder: {output_folder}")
+        self.logMessage("Files:")
+        self.logMessage(f"  • T1_280_volumes.csv")
+        self.logMessage(f"  • T1_280_volumes.xlsx")
+        self.logMessage(f"  • T1_280_segment.nii.gz")
+        self.logMessage("")
+        self.logMessage("View in Segment Editor module to see all regions!")
+        self.logMessage("="*50)
