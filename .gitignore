@@ -1,25 +1,30 @@
-# Model files (separate license, too large for GitHub)
-MODEL_FOLDER/*.pth
-*.pth
-
-# Output files
-output/*.nii.gz
-output/*.nii
-output/T1_tmp.*
-
 # Python
 __pycache__/
 *.pyc
 *.pyo
-*.egg-info/
+*.pyd
+.Python
+*.so
 
-# System
+# Model files (LARGE - 1.62 GB)
+MODEL_FOLDER/
+MODEL_FOLDER.zip
+*.zip
+*.part
+
+# Data files
+*.nii
+*.nii.gz
+output/
+*.xlsx
+*.csv
+*.pkl
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
 .DS_Store
 Thumbs.db
-*.swp
-.idea/
-.vscode/
-
-# Temporary
-*.tmp
-temp/
