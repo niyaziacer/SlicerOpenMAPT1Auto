@@ -1,191 +1,159 @@
 # OpenMAPT1Auto - 3D Slicer Extension
 
-Automated brain MRI parcellation using OpenMAP-T1 in 3D Slicer.
+Automated brain MRI parcellation into **280 anatomical regions** using [OpenMAP-T1](https://github.com/OishiLab/OpenMAP-T1) deep learning model.
+
+![3D Visualization](Screenshots/Screenshot2.png)
 
 ---
 
-## ⚠️ Important: Model Files Required
+## ⚠️ License
 
-This extension requires **OpenMAP-T1 pretrained models**, which are licensed by **Johns Hopkins University** under specific terms. 
-
-**We do NOT distribute the model files.** You must download them directly from the official source.
-
----
-
-## 📥 How to Download the Pretrained Models
-
-### Step 1: Visit Official Repository
-
-Go to the official OpenMAP-T1 repository:
-
-🔗 **https://github.com/OishiLab/OpenMAP-T1**
-
-### Step 2: Review License Terms
-
-**IMPORTANT:** Before downloading, please review the license:
-- ✅ **Non-commercial research use only**
-- ❌ **No commercial use** without separate agreement
-- ✅ **Attribution required** in publications
-
-License: [JHU Research Software License - No For-Profit - No Redistribution](https://github.com/OishiLab/OpenMAP-T1/blob/main/LICENSE)
-
-### Step 3: Download Models
-
-Find the pretrained model download link in their repository:
-
-📦 **[Link to pretrained model](https://github.com/OishiLab/OpenMAP-T1#pretrained-models)**
-
-> **Note:** The model file is approximately **1.6 GB**. Download may take several minutes depending on your internet connection.
-
-### Step 4: Extract to MODEL_FOLDER
-
-1. After downloading, extract the model files
-2. Place them in the `MODEL_FOLDER/` directory of this extension:
-   ```
-   OpenMAPT1Auto/
-   └── MODEL_FOLDER/
-       ├── best_metric_model.pth
-       └── [other model files]
-   ```
-
-3. Verify the folder structure is correct
+- **Extension code:** MIT
+- **OpenMAP-T1 models:** [JHU Research Software License - Non-Commercial](https://github.com/OishiLab/OpenMAP-T1/blob/main/LICENSE)
+  - ✅ Non-commercial research use only
+  - ❌ No commercial use without separate agreement
+  - ✅ Attribution required in publications
 
 ---
 
 ## 🚀 Installation
 
 ### Prerequisites
+
 - **3D Slicer** 5.0 or later
-- **Python** 3.7+
-- **PyTorch** (will be installed automatically by Slicer)
-- **OpenMAP-T1 models** (see above)
+- **PyTorch** (installed automatically by Slicer)
+- **OpenMAP-T1 models** (~1.5GB, downloaded automatically)
 
-### Install Extension
+### Option 1: From Extension Manager (Recommended)
 
-#### Option 1: From Extension Manager (Coming Soon)
 1. Open 3D Slicer
-2. Go to **View** → **Extension Manager**
-3. Search for "OpenMAPT1Auto"
+2. Go to **View → Extension Manager**
+3. Search for **OpenMAPT1Auto**
 4. Click **Install**
+5. Restart Slicer
 
-#### Option 2: Manual Installation (For Development)
+### Option 2: Manual Installation
 
+1. Clone repository:
 ```bash
-# Clone repository
-git clone https://github.com/[your-username]/OpenMAPT1Auto.git
-cd OpenMAPT1Auto
-
-# Download models (see instructions above)
-# Place models in MODEL_FOLDER/
-
-# Add to 3D Slicer
-# 1. Open 3D Slicer
-# 2. Edit → Application Settings → Modules
-# 3. Add path: /path/to/OpenMAPT1Auto
-# 4. Restart Slicer
+git clone https://github.com/niyaziacer/SlicerOpenMAPT1Auto.git
 ```
+
+2. Open 3D Slicer
+3. Go to **Edit → Application Settings → Modules**
+4. Add path: `/path/to/SlicerOpenMAPT1Auto`
+5. Restart Slicer
+
+---
+
+## 📥 Model Download
+
+Models are downloaded **automatically** when you first use the extension:
+
+1. Open the extension in Slicer
+2. Click **"Download Models from Google Drive"**
+3. Accept the license agreement
+4. Wait for download (~1.5GB, 10-15 minutes)
+
+### Manual Download (if automatic fails)
+
+1. Download from: [Google Drive Link](https://drive.google.com/file/d/1YEE65X5Cx8LHK-C070TbZARHp1C08KxA/view?usp=sharing)
+2. Extract the zip file
+3. Place `MODEL_FOLDER/` inside the extension directory
 
 ---
 
 ## 📖 Usage
 
-1. Load your T1-weighted MRI in 3D Slicer
-2. Go to **Modules** → **Segmentation** → **OpenMAPT1Auto**
-3. Select input volume
-4. Click **Apply**
-5. Wait for automatic parcellation (may take 2-5 minutes)
-6. View results in 3D
+1. Load your **T1-weighted MRI** in 3D Slicer
+2. Go to **Modules → Segmentation → OpenMAP-T1 Auto Parcellation**
+3. Download models if not already downloaded
+4. Select your T1 volume from the dropdown
+5. Click **"Run OpenMAP-T1 Pipeline"**
+6. Wait for processing (2-5 minutes depending on GPU/CPU)
+7. Results appear automatically in 2D slices and 3D view
+
+### Output Files
+
+All outputs are saved in the `output/` folder:
+
+| File | Description |
+|---|---|
+| `T1_280_volumes.csv` | Volume measurements per region (CSV) |
+| `T1_280_volumes.xlsx` | Volume measurements per region (Excel) |
+| `T1_280_segment.nii.gz` | Segmentation labelmap (NIfTI) |
+
+You can also export results to Excel directly from the **Export Results** button in the extension.
+
+---
+
+## 🔬 Features
+
+- Automated brain parcellation into **280 anatomical regions**
+- Automatic model download from Google Drive (~1.5GB)
+- Non-commercial license agreement dialog
+- Volume calculation for all regions
+- Export results to **CSV and Excel**
+- 3D visualization with labeled segments in Segment Editor
+
+---
+
+## 🏗️ Pipeline Stages
+
+1. **Preprocessing** - Standardize T1 volume
+2. **Cropping** - Extract brain region
+3. **Skull Stripping** - Remove non-brain tissue
+4. **Parcellation** - Segment into 280 regions
+5. **Hemisphere Separation** - Left/Right classification
+6. **Postprocessing** - Align and refine segmentation
 
 ---
 
 ## 🔬 Citation
 
-If you use this extension in your research, please cite:
+If you use this extension in your research, please cite both:
 
 ### This Extension
 ```bibtex
-@software{openmaptlauto,
-  title={OpenMAPT1Auto: 3D Slicer Extension for OpenMAP-T1},
-  author={[Your Name]},
-  year={2026},
-  url={https://github.com/[your-username]/OpenMAPT1Auto}
+@software{openmapt1auto,
+  title={OpenMAPT1Auto: 3D Slicer Extension for Automated Brain Parcellation},
+  author={Acer, Niyazi},
+  year={2025},
+  url={https://github.com/niyaziacer/SlicerOpenMAPT1Auto}
 }
 ```
 
-### Original OpenMAP-T1
-**IMPORTANT:** You MUST also cite the original OpenMAP-T1 work:
-
+### Original OpenMAP-T1 (Required)
 ```bibtex
-[OpenMAP-T1 citation - get from their repository]
+@article{nishimaki2024openmap,
+  title={OpenMAP-T1: A Rapid Deep Learning Approach to Parcellation of 280 Anatomical Regions to Cover the Whole Brain},
+  author={Nishimaki, Taiki and others},
+  year={2024}
+}
 ```
-
-© The Johns Hopkins University
-
----
-
-## ⚖️ License
-
-### This Extension Code
-[Your chosen license - e.g., MIT, Apache 2.0]
-
-See [LICENSE](LICENSE.txt) for details.
-
-### OpenMAP-T1 Models
-The pretrained models are licensed separately under:
-
-**JHU Research Software License Agreement - No For-Profit - No Redistribution**
-
-By using this extension, you agree to comply with OpenMAP-T1's license terms.
-
-Full license: https://github.com/OishiLab/OpenMAP-T1/blob/main/LICENSE
-
----
-
-## 🤝 Acknowledgments
-
-This extension is built upon the excellent work of the OpenMAP-T1 team:
-
-- **Original Project:** [OpenMAP-T1](https://github.com/OishiLab/OpenMAP-T1)
-- **Developed by:** Johns Hopkins University, Oishi Lab
-- **License:** JHU Research Software License
-
-We are grateful to the original authors for making their research available to the community.
-
----
-
-## 📧 Contact
-
-For questions about **this extension**: [your email]
-
-For questions about **OpenMAP-T1 models/license**: Contact JHU via their repository
 
 ---
 
 ## 🐛 Troubleshooting
 
-### "Model files not found" error
-
-**Solution:** 
-1. Ensure you downloaded models from official source
-2. Verify files are in `MODEL_FOLDER/` directory
-3. Check file names match: `best_metric_model.pth`
-
-### Download link not working
-
-**Solution:**
-Visit the official repository directly: https://github.com/OishiLab/OpenMAP-T1
-
-### License questions
-
-**Solution:**
-Contact Johns Hopkins University Technology Transfer Office or the OpenMAP-T1 team directly.
+| Problem | Solution |
+|---|---|
+| "Models not found" | Click **Download Models** button in the extension |
+| Download fails | Use the manual download link above |
+| "openpyxl not found" | Open Python Console in Slicer, run: `import slicer; slicer.util.pip_install("openpyxl")` |
+| Alignment issues | Make sure you select the correct T1 volume |
 
 ---
 
-## 🔄 Updates
+## 🤝 Acknowledgments
 
-- **v1.0.0** (2026-01-20): Initial release with model download instructions
+Built upon **OpenMAP-T1** by Taiki Nishimaki and Johns Hopkins University.
+- Original Project: [OpenMAP-T1](https://github.com/OishiLab/OpenMAP-T1)
+- License: [JHU Research Software License](https://github.com/OishiLab/OpenMAP-T1/blob/main/LICENSE)
 
 ---
 
-**Note:** This is an independent extension. For official OpenMAP-T1 support, please visit their repository.
+## 📧 Contact
+
+- **Extension:** [acerniyazi@gmail.com](mailto:acerniyazi@gmail.com)
+- **OpenMAP-T1 models/license:** [OishiLab GitHub](https://github.com/OishiLab/OpenMAP-T1)
