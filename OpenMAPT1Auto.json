@@ -12,24 +12,24 @@
   ],
   "description": {
     "short": "Automated brain MRI parcellation using OpenMAP-T1 deep learning model",
-    "long": "This extension provides automated segmentation of T1-weighted brain MRI images into 280 anatomical regions using the OpenMAP-T1 deep learning model developed by Johns Hopkins University. It offers a user-friendly interface within 3D Slicer for clinical and research applications."
+    "long": "This extension provides automated segmentation of T1-weighted brain MRI images into 280 anatomical regions using the OpenMAP-T1 deep learning model. Models are downloaded automatically from Google Drive (~1.5GB). Supports volume calculation and Excel/CSV export."
   },
   "acknowledgments": {
-    "text": "This extension is built upon OpenMAP-T1 developed by Taiki Nishimaki and Johns Hopkins University. We are grateful for their excellent work and for making it available to the research community.",
+    "text": "Built upon OpenMAP-T1 by Taiki Nishimaki and Johns Hopkins University.",
     "url": "https://github.com/TaikiNishimaki/OpenMAP-T1"
   },
   "license": {
     "extension_code": "MIT",
-    "model": "JHU Research Software License - Non-Commercial, No Redistribution",
-    "note": "Model files are NOT included and must be downloaded separately from the official OpenMAP-T1 repository"
+    "model": "JHU Research Software License - Non-Commercial",
+    "note": "Models downloaded automatically via Google Drive. Non-commercial use only."
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/niyaziacer/OpenMAPT1Auto",
-    "branch": "main"
+    "url": "https://github.com/niyaziacer/SlicerOpenMAPT1Auto",
+    "branch": "master"
   },
-  "homepage": "https://github.com/niyaziacer/OpenMAPT1Auto",
-  "documentation": "https://github.com/niyaziacer/OpenMAPT1Auto/blob/main/README.md",
+  "homepage": "https://github.com/niyaziacer/SlicerOpenMAPT1Auto",
+  "documentation": "https://github.com/niyaziacer/SlicerOpenMAPT1Auto/blob/master/README.md",
   "status": "Beta",
   "version": "1.0.0",
   "slicer_version": "5.0+",
@@ -38,49 +38,48 @@
       "torch>=1.7.0",
       "numpy>=1.19.0",
       "nibabel>=3.2.0",
-      "SimpleITK>=2.0.0",
-      "monai>=0.8.0"
+      "pandas",
+      "openpyxl",
+      "gdown"
     ],
     "slicer_extensions": []
   },
   "screenshots": [
     {
       "file": "Screenshots/Screenshot1.png",
-      "caption": "OpenMAPT1Auto user interface showing input selection and processing options",
-      "url": "https://raw.githubusercontent.com/niyaziacer/OpenMAPT1Auto/main/Screenshots/Screenshot1.png"
+      "caption": "OpenMAPT1Auto user interface",
+      "url": "https://raw.githubusercontent.com/niyaziacer/SlicerOpenMAPT1Auto/master/Screenshots/Screenshot1.png"
     },
     {
       "file": "Screenshots/Screenshot2.png",
-      "caption": "3D visualization of automated brain parcellation results with 280 anatomical regions",
-      "url": "https://raw.githubusercontent.com/niyaziacer/OpenMAPT1Auto/main/Screenshots/Screenshot2.png"
+      "caption": "3D brain parcellation with 280 regions",
+      "url": "https://raw.githubusercontent.com/niyaziacer/SlicerOpenMAPT1Auto/master/Screenshots/Screenshot2.png"
     }
   ],
   "icon": {
     "file": "OpenMAPT1Auto.png",
-    "url": "https://raw.githubusercontent.com/niyaziacer/OpenMAPT1Auto/main/OpenMAPT1Auto.png"
+    "url": "https://raw.githubusercontent.com/niyaziacer/SlicerOpenMAPT1Auto/master/OpenMAPT1Auto.png"
   },
   "features": [
     "Automated brain parcellation into 280 anatomical regions",
-    "T1-weighted MRI segmentation",
-    "User-friendly 3D Slicer interface",
-    "Fast processing using deep learning",
+    "Automatic model download from Google Drive (~1.5GB)",
+    "Non-commercial license agreement dialog",
     "Volume calculation for all regions",
-    "Export results to CSV/Excel",
-    "3D visualization of parcellation results"
+    "Export results to CSV and Excel",
+    "3D visualization with labeled segments"
   ],
   "requirements": {
     "model_download": {
       "required": true,
-      "source": "https://github.com/TaikiNishimaki/OpenMAP-T1",
-      "size": "~1.6 GB",
-      "license": "JHU Research Software License",
-      "instructions": "Users must download model files separately from the official OpenMAP-T1 repository and accept the JHU license terms"
+      "source": "Google Drive (automatic)",
+      "size": "~1.5 GB",
+      "license": "JHU Research Software License - Non-Commercial"
     }
   },
   "citation": {
     "extension": {
-      "text": "Acer, N. (2025). OpenMAPT1Auto: 3D Slicer Extension for Automated Brain Parcellation. GitHub repository.",
-      "url": "https://github.com/niyaziacer/OpenMAPT1Auto"
+      "text": "Acer, N. (2025). OpenMAPT1Auto: 3D Slicer Extension for Automated Brain Parcellation.",
+      "url": "https://github.com/niyaziacer/SlicerOpenMAPT1Auto"
     },
     "underlying_work": {
       "required": true,
@@ -93,10 +92,8 @@
     "MRI parcellation",
     "deep learning",
     "T1-weighted",
-    "anatomical segmentation",
     "OpenMAP-T1",
-    "neuroimaging",
-    "automated segmentation"
+    "neuroimaging"
   ],
   "build": {
     "type": "python_scripted",

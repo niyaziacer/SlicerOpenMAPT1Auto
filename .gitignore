@@ -1,30 +1,7 @@
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-
-# Model files (LARGE - 1.62 GB)
 MODEL_FOLDER/
-MODEL_FOLDER.zip
-*.zip
-*.part
-
-# Data files
-*.nii
-*.nii.gz
 output/
-*.xlsx
-*.csv
-*.pkl
-
-# IDE
-.vscode/
-.idea/
-*.swp
-
-# OS
+*.pyc
+__pycache__/
+*.zip
 .DS_Store
-Thumbs.db
+images/
