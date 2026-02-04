@@ -3,5 +3,5 @@ output/
 *.pyc
 __pycache__/
 *.zip
-models_temp.zip
 .DS_Store
+images/
