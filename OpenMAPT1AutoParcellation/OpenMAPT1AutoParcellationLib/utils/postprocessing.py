@@ -1,13 +1,12 @@
 import pickle
-
 import numpy as np
 import torch
-
+import os
 
 def postprocessing(parcellated, separated, shift, device):
-    with open("utils/split_map.pkl", "rb") as tf:
+    split_map_path = os.path.join(os.path.dirname(__file__), "split_map.pkl")
+    with open(split_map_path, "rb") as tf:
         dictionary = pickle.load(tf)
-
     pmap = torch.tensor(parcellated.astype("int16"), requires_grad=False).to(device)
     hmap = torch.tensor(separated.astype("int16"), requires_grad=False).to(device)
     combined = torch.stack((torch.flatten(hmap), torch.flatten(pmap)), axis=-1)

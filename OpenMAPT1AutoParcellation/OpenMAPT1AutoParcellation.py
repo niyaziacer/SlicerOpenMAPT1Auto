@@ -1,6 +1,5 @@
 # OpenMAPT1AutoParcellation.py
 # ScriptedLoadableModule for 3D Slicer
-
 import os
 import qt
 import ctk
@@ -12,6 +11,13 @@ import numpy as np
 import pandas as pd
 import zipfile
 import shutil
+
+# Add module lib to path
+import sys
+module_dir = os.path.dirname(__file__)
+lib_path = os.path.join(module_dir, "OpenMAPT1AutoParcellationLib")
+if lib_path not in sys.path:
+    sys.path.insert(0, lib_path)
 
 # Attempt to import OpenMAP utils
 try:
