@@ -1,6 +1,5 @@
 # OpenMAPT1AutoParcellation.py
 # ScriptedLoadableModule for 3D Slicer
-
 import os
 import qt
 import ctk
@@ -13,15 +12,22 @@ import pandas as pd
 import zipfile
 import shutil
 
+# Add module lib to path
+import sys
+module_dir = os.path.dirname(__file__)
+lib_path = os.path.join(module_dir, "OpenMAPT1AutoParcellationLib")
+if lib_path not in sys.path:
+    sys.path.insert(0, lib_path)
+
 # Attempt to import OpenMAP utils
 try:
-    from OpenMAPT1AutoParcellationLib.utils.cropping import cropping
-    from OpenMAPT1AutoParcellationLib.utils.hemisphere import hemisphere
-    from OpenMAPT1AutoParcellationLib.utils.load_model import load_model
-    from OpenMAPT1AutoParcellationLib.utils.parcellation import parcellation
-    from OpenMAPT1AutoParcellationLib.utils.preprocessing import preprocessing
-    from OpenMAPT1AutoParcellationLib.utils.stripping import stripping
-    from OpenMAPT1AutoParcellationLib.utils.postprocessing import postprocessing
+    from utils.cropping import cropping
+    from utils.hemisphere import hemisphere
+    from utils.load_model import load_model
+    from utils.parcellation import parcellation
+    from utils.preprocessing import preprocessing
+    from utils.stripping import stripping
+    from utils.postprocessing import postprocessing
 except Exception as e:
     utils_import_error = str(e)
 else:
