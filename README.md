@@ -26,11 +26,13 @@ Automated brain MRI parcellation into **280 anatomical regions** using [OpenMAP-
 
 ### Option 1: From Extension Manager (Recommended)
 
-1. Open 3D Slicer
-2. Go to **View → Extension Manager**
-3. Search for **OpenMAPT1Auto**
-4. Click **Install**
-5. Restart Slicer
+1. 3D Slicer Nightly indir ve kur
+2. Extension Manager'dan OpenMAPT1Auto'yu kur
+3. Slicer'ı yeniden başlat
+4. Modules → Segmentation → OpenMAP-T1 Auto Parcellation
+5. İlk açılışta bağımlılıklar otomatik kurulur (~5 dakika)
+6. Model indir butonuna tıkla (~1.5GB)
+7. T1 görüntüyü yükle ve çalıştır
 
 ### Option 2: Manual Installation
 
