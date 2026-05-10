@@ -5,6 +5,28 @@ import qt
 import ctk
 import slicer
 import vtk
+
+# Otomatik paket kurulumu
+def install_requirements():
+    required = [
+        "torch",
+        "torchvision", 
+        "numpy",
+        "pandas",
+        "nibabel",
+        "gdown",
+        "openpyxl",
+        "tqdm"
+    ]
+    import importlib
+    for package in required:
+        try:
+            importlib.import_module(package)
+        except ImportError:
+            slicer.util.pip_install(package)
+
+install_requirements()
+
 import torch
 import nibabel as nib
 import numpy as np
