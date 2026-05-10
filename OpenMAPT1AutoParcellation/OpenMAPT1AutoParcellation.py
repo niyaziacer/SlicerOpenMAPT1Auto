@@ -14,7 +14,7 @@ def install_requirements():
         "numpy",
         "pandas",
         "nibabel",
-        "gdown",
+        "gdown>=4.6.0",
         "openpyxl",
         "tqdm"
     ]
@@ -190,7 +190,7 @@ class OpenMAPT1AutoParcellationWidget(slicer.ScriptedLoadableModule.ScriptedLoad
             temp_zip = os.path.join(self.moduleDir, "models_temp.zip")
             url = "https://drive.google.com/uc?export=download&id=" + self.GDRIVE_FILE_ID
             self.logMessage("Downloading models...")
-            gdown.download(url, temp_zip, quiet=False, fuzzy=True)
+            gdown.download(url, temp_zip, quiet=False)
             self.logMessage("Extracting...")
             with zipfile.ZipFile(temp_zip, 'r') as z:
                 z.extractall(self.moduleDir)
