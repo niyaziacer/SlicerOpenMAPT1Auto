@@ -6,156 +6,119 @@ Automated brain MRI parcellation into **280 anatomical regions** using [OpenMAP-
 
 ---
 
-## ⚠️ License
+⚠️ License
+Extension codeMITOpenMAP-T1 modelsJHU Research Software License — Non-Commercial
 
-- **Extension code:** MIT
-- **OpenMAP-T1 models:** [JHU Research Software License - Non-Commercial](https://github.com/OishiLab/OpenMAP-T1/blob/main/LICENSE)
-  - ✅ Non-commercial research use only
-  - ❌ No commercial use without separate agreement
-  - ✅ Attribution required in publications
+✅ Non-commercial research use only
+❌ No commercial use without separate agreement
+✅ Attribution required in publications
 
----
 
-## 🚀 Installation
+🚀 Installation
+Prerequisites
 
-### Prerequisites
+3D Slicer Nightly (5.11 or later)
+NVIDIA GPU recommended (CPU also supported, slower)
+Internet connection for model download (~1.5 GB)
 
-- **3D Slicer** 5.0 or later
-- **PyTorch** (installed automatically by Slicer)
-- **OpenMAP-T1 models** (~1.5GB, downloaded automatically)
+Step 1 — Install from Extension Manager
 
-### Option 1: From Extension Manager (Recommended)
+Download and install 3D Slicer Nightly from https://download.slicer.org
+Open Slicer → View → Extension Manager
+Search for OpenMAPT1Auto → Install → Restart Slicer
 
-1. 3D Slicer Nightly indir ve kur
-2. Extension Manager'dan OpenMAPT1Auto'yu kur
-3. Slicer'ı yeniden başlat
-4. Modules → Segmentation → OpenMAP-T1 Auto Parcellation
-5. İlk açılışta bağımlılıklar otomatik kurulur (~5 dakika)
-6. Model indir butonuna tıkla (~1.5GB)
-7. T1 görüntüyü yükle ve çalıştır
+Step 2 — Copy library files (required until automated)
 
-### Option 2: Manual Installation
+This step is currently required. It will be automated in a future build.
 
-1. Clone repository:
-```bash
-git clone https://github.com/niyaziacer/SlicerOpenMAPT1Auto.git
-```
 
-2. Open 3D Slicer
-3. Go to **Edit → Application Settings → Modules**
-4. Add path: `/path/to/SlicerOpenMAPT1Auto`
-5. Restart Slicer
+Download the repository zip:
 
----
+   https://github.com/niyaziacer/SlicerOpenMAPT1Auto/archive/refs/heads/main.zip
 
-## 📥 Model Download
+Extract the zip and locate this folder:
 
-Models are downloaded **automatically** when you first use the extension:
+   SlicerOpenMAPT1Auto-main/OpenMAPT1AutoParcellation/OpenMAPT1AutoParcellationLib
 
-1. Open the extension in Slicer
-2. Click **"Download Models from Google Drive"**
-3. Accept the license agreement
-4. Wait for download (~1.5GB, 10-15 minutes)
+Copy the OpenMAPT1AutoParcellationLib folder to:
+Windows:
 
-### Manual Download (if automatic fails)
+   C:\Users\[YourUsername]\AppData\Local\slicer.org\3D Slicer 5.11.0-[date]\slicer.org\Extensions-[no]\OpenMAPT1Auto\lib\Slicer-5.11\qt-scripted-modules\
+Mac:
+   /Users/[YourUsername]/Library/Application Support/slicer.org/3D Slicer 5.11.0-[date]/slicer.org/Extensions-[no]/OpenMAPT1Auto/lib/Slicer-5.11/qt-scripted-modules/
 
-1. Download from: [Google Drive Link](https://drive.google.com/file/d/1YEE65X5Cx8LHK-C070TbZARHp1C08KxA/view?usp=sharing)
-2. Extract the zip file
-3. Place `MODEL_FOLDER/` inside the extension directory
+Also copy labeled.txt from OpenMAPT1AutoParcellation/ to the same folder.
+Restart Slicer.
 
----
+Step 3 — Download models
 
-## 📖 Usage
+Open Modules → Segmentation → OpenMAP-T1 Auto Parcellation
+Click Download Models from Google Drive
+Accept the license agreement
+Wait for download (~1.5 GB, 10–15 minutes)
 
-1. Load your **T1-weighted MRI** in 3D Slicer
-2. Go to **Modules → Segmentation → OpenMAP-T1 Auto Parcellation**
-3. Download models if not already downloaded
-4. Select your T1 volume from the dropdown
-5. Click **"Run OpenMAP-T1 Pipeline"**
-6. Wait for processing (2-5 minutes depending on GPU/CPU)
-7. Results appear automatically in 2D slices and 3D view
+Manual download (if automatic fails):
+Download from Google Drive, extract, and place MODEL_FOLDER/ inside the extension's qt-scripted-modules/ directory.
 
-### Output Files
+📖 Usage
 
-All outputs are saved in the `output/` folder:
+Load your T1-weighted MRI: File → Add Data
+Go to Modules → Segmentation → OpenMAP-T1 Auto Parcellation
+Select your T1 volume from the dropdown
+Click Run OpenMAP-T1 Pipeline
+Wait for processing:
 
-| File | Description |
-|---|---|
-| `T1_280_volumes.csv` | Volume measurements per region (CSV) |
-| `T1_280_volumes.xlsx` | Volume measurements per region (Excel) |
-| `T1_280_segment.nii.gz` | Segmentation labelmap (NIfTI) |
+NVIDIA GPU: ~2–5 minutes
+CPU only: ~15–45 minutes
 
-You can also export results to Excel directly from the **Export Results** button in the extension.
 
----
+Results appear automatically in 2D slices and 3D view
 
-## 🔬 Features
 
-- Automated brain parcellation into **280 anatomical regions**
-- Automatic model download from Google Drive (~1.5GB)
-- Non-commercial license agreement dialog
-- Volume calculation for all regions
-- Export results to **CSV and Excel**
-- 3D visualization with labeled segments in Segment Editor
+📂 Output Files
+All outputs are saved in the output/ folder inside the extension directory:
+FileDescriptionT1_280_volumes.csvVolume measurements per region (CSV)T1_280_volumes.xlsxVolume measurements per region (Excel)T1_280_segment.nii.gzSegmentation labelmap (NIfTI)
+You can also export results to Excel directly using the Export Results button in the extension panel.
 
----
+🔬 Features
 
-## 🏗️ Pipeline Stages
+Automated brain parcellation into 280 anatomical regions
+Automatic dependency installation on first load
+Automatic model download from Google Drive (~1.5 GB)
+Non-commercial license agreement dialog
+Volume calculation for all regions
+Export results to CSV and Excel
+3D visualization with labeled segments in Segment Editor
+Named segment labels from labeled.txt
 
-1. **Preprocessing** - Standardize T1 volume
-2. **Cropping** - Extract brain region
-3. **Skull Stripping** - Remove non-brain tissue
-4. **Parcellation** - Segment into 280 regions
-5. **Hemisphere Separation** - Left/Right classification
-6. **Postprocessing** - Align and refine segmentation
 
----
+🏗️ Pipeline Stages
+StageDescriptionPreprocessingStandardize T1 volumeCroppingExtract brain regionSkull strippingRemove non-brain tissueParcellationSegment into 280 regionsHemisphere separationLeft/Right classificationPostprocessingAlign and refine segmentation
 
-## 🔬 Citation
+🐛 Troubleshooting
+ProblemSolution"Models not found"Click Download Models button in the extensionDownload failsUse the manual download link above"No module named utils"Make sure OpenMAPT1AutoParcellationLib is copied to the qt-scripted-modules folderLabels not showingMake sure labeled.txt is copied to the qt-scripted-modules folderSlow processingNormal on CPU — wait 15–45 minutes. NVIDIA GPU recommended.Alignment issuesMake sure you select the correct T1 volume from the dropdown
 
+🔬 Citation
 If you use this extension in your research, please cite both:
-
-### This Extension
-```bibtex
-@software{openmapt1auto,
+This extension:
+bibtex@software{openmapt1auto,
   title={OpenMAPT1Auto: 3D Slicer Extension for Automated Brain Parcellation},
   author={Acer, Niyazi},
   year={2025},
   url={https://github.com/niyaziacer/SlicerOpenMAPT1Auto}
 }
-```
-
-### Original OpenMAP-T1 (Required)
-```bibtex
-@article{nishimaki2024openmap,
+Original OpenMAP-T1 (required):
+bibtex@article{nishimaki2024openmap,
   title={OpenMAP-T1: A Rapid Deep Learning Approach to Parcellation of 280 Anatomical Regions to Cover the Whole Brain},
   author={Nishimaki, Taiki and others},
   year={2024}
 }
-```
 
----
+🤝 Acknowledgments
+Built upon OpenMAP-T1 by Taiki Nishimaki and Johns Hopkins University.
+License: JHU Research Software License
 
-## 🐛 Troubleshooting
+📧 Contact
 
-| Problem | Solution |
-|---|---|
-| "Models not found" | Click **Download Models** button in the extension |
-| Download fails | Use the manual download link above |
-| "openpyxl not found" | Open Python Console in Slicer, run: `import slicer; slicer.util.pip_install("openpyxl")` |
-| Alignment issues | Make sure you select the correct T1 volume |
-
----
-
-## 🤝 Acknowledgments
-
-Built upon **OpenMAP-T1** by Taiki Nishimaki and Johns Hopkins University.
-- Original Project: [OpenMAP-T1](https://github.com/OishiLab/OpenMAP-T1)
-- License: [JHU Research Software License](https://github.com/OishiLab/OpenMAP-T1/blob/main/LICENSE)
-
----
-
-## 📧 Contact
-
-- **Extension:** [acerniyazi@gmail.com](mailto:acerniyazi@gmail.com)
-- **OpenMAP-T1 models/license:** [OishiLab GitHub](https://github.com/OishiLab/OpenMAP-T1)
+Extension: acerniyazi@gmail.com
+OpenMAP-T1 models/license: OishiLab GitHub
