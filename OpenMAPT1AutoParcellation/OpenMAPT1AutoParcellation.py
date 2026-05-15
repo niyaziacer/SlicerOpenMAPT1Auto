@@ -173,41 +173,41 @@ class OpenMAPT1AutoParcellationWidget(slicer.ScriptedLoadableModule.ScriptedLoad
         if msgBox.exec_() == qt.QMessageBox.Yes:
             self.downloadModels()
 
-  def downloadModels(self):
-    model_folder = os.path.join(self.moduleDir, "MODEL_FOLDER")
-    if os.path.exists(model_folder):
-        shutil.rmtree(model_folder)
-    try:
-        slicer.util.pip_install("gdown --upgrade")
-        import importlib
-        import gdown
-        importlib.reload(gdown)
-        
-        self.progressBar.setVisible(True)
-        self.progressBar.setRange(0, 0)
-        slicer.app.processEvents()
-        
-        temp_zip = os.path.join(self.moduleDir, "models_temp.zip")
-        url = "https://drive.google.com/uc?id=" + self.GDRIVE_FILE_ID
-        
-        self.logMessage("Downloading models...")
-        gdown.download(url, temp_zip, quiet=False)
-        
-        self.logMessage("Extracting...")
-        with zipfile.ZipFile(temp_zip, 'r') as z:
-            z.extractall(self.moduleDir)
-        if os.path.exists(temp_zip):
-            os.remove(temp_zip)
-        
-        self.progressBar.setVisible(False)
-        self.logMessage("Models downloaded!")
-        self.checkModelsExist()
-        
-    except Exception as e:
-        self.progressBar.setVisible(False)
-        self.logMessage("ERROR: " + str(e))
-        import traceback
-        self.logMessage(traceback.format_exc())
+    def downloadModels(self):
+        model_folder = os.path.join(self.moduleDir, "MODEL_FOLDER")
+        if os.path.exists(model_folder):
+            shutil.rmtree(model_folder)
+        try:
+            slicer.util.pip_install("gdown --upgrade")
+            import importlib
+            import gdown
+            importlib.reload(gdown)
+
+            self.progressBar.setVisible(True)
+            self.progressBar.setRange(0, 0)
+            slicer.app.processEvents()
+
+            temp_zip = os.path.join(self.moduleDir, "models_temp.zip")
+            url = "https://drive.google.com/uc?id=" + self.GDRIVE_FILE_ID
+
+            self.logMessage("Downloading models...")
+            gdown.download(url, temp_zip, quiet=False)
+
+            self.logMessage("Extracting...")
+            with zipfile.ZipFile(temp_zip, 'r') as z:
+                z.extractall(self.moduleDir)
+            if os.path.exists(temp_zip):
+                os.remove(temp_zip)
+
+            self.progressBar.setVisible(False)
+            self.logMessage("Models downloaded!")
+            self.checkModelsExist()
+
+        except Exception as e:
+            self.progressBar.setVisible(False)
+            self.logMessage("ERROR: " + str(e))
+            import traceback
+            self.logMessage(traceback.format_exc())
 
     # ========== EXCEL EXPORT ==========
 
